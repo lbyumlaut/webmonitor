@@ -79,7 +79,7 @@ async fn main() -> std::io::Result<()> {
         App::new().service(fs::Files::new("/app", &path_for_page).show_files_listing().index_file("index.html"))
         .route("/sysinfo", web::get().to(sysinfo))
     })
-    .bind("127.0.0.1:80")?
+    .bind("0.0.0.0:80")?
     .run()
     .await
 }
