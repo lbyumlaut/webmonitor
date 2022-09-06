@@ -1,5 +1,5 @@
 use actix_web::{web, App, HttpRequest, HttpServer};
-use sysinfo::{SystemExt, ProcessorExt, DiskExt};
+use sysinfo::{SystemExt, CpuExt, DiskExt};
 use serde::Serialize;
 use actix_files as fs;
 use std::env;
@@ -34,23 +34,23 @@ async fn sysinfo(_req: HttpRequest) -> web::Json<SysInfo> {
 
     let mut sys = SysInfo::default();
     
-    let processors = system.get_processor_list();
+    let processors = system.cpus();
     for processor in processors {
-        sys.processor_cores.push(ProcessorCore{name: processor.get_name().to_string(), utilization: processor.get_cpu_usage()});
+        sys.processor_cores.push(ProcessorCore{name: processor.name().to_string(), utilization: processor.cpu_usage()});
     }
 
-    sys.free_ram = system.get_free_memory();
-    sys.total_ram = system.get_total_memory();
-    sys.used_ram = system.get_used_memory();
+    sys.free_ram = system.free_memory();
+    sys.total_ram = system.total_memory();
+    sys.used_ram = system.used_memory();
 
     
-    let disks = system.get_disks();
+    let disks = system.disks();
     for disk in disks {
-        sys.disks.push(Disk{ name: disk.get_name().to_str().unwrap_or_default().to_string(),
-                             mount_point: disk.get_mount_point().to_str().unwrap_or_default().to_string(),
-                             available_space: disk.get_available_space(),
-                             total_space: disk.get_total_space(),
-                             filesystem: String::from_utf8_lossy(disk.get_file_system()).to_string(),
+        sys.disks.push(Disk{ name: disk.name().to_str().unwrap_or_default().to_string(),
+                             mount_point: disk.mount_point().to_str().unwrap_or_default().to_string(),
+                             available_space: disk.available_space(),
+                             total_space: disk.total_space(),
+                             filesystem: String::from_utf8_lossy(disk.file_system()).to_string(),
 
             });
     }

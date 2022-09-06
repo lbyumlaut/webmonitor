@@ -8,10 +8,10 @@ inherit cargo
 # how to get web_monitor could be as easy as but default to a git checkout:
 # SRC_URI += "crate://crates.io/web_monitor/0.1.0"
 SRC_URI += "git://bitbucket.org/lazarbankovic/webmonitor/;protocol=https;nobranch=1"
-SRCREV = "84f0653cecf79f3206c335b1ebe99c4e107ac368"
+SRCREV = "fad0a19192677bfd24ea1bdb649278552c8c56e3"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
-PV:append = ".AUTOINC+84f0653cec"
+PV:append = ".AUTOINC+fad0a19192"
 
 # please note if you have entries that do not begin with crate://
 # you must change them to how that package can be fetched
@@ -45,11 +45,17 @@ SRC_URI += " \
     crate://crates.io/cfg-if/1.0.0 \
     crate://crates.io/convert_case/0.4.0 \
     crate://crates.io/cookie/0.16.0 \
+    crate://crates.io/core-foundation-sys/0.8.3 \
     crate://crates.io/cpufeatures/0.2.5 \
     crate://crates.io/crc32fast/1.3.2 \
+    crate://crates.io/crossbeam-channel/0.5.6 \
+    crate://crates.io/crossbeam-deque/0.8.2 \
+    crate://crates.io/crossbeam-epoch/0.9.10 \
+    crate://crates.io/crossbeam-utils/0.8.11 \
     crate://crates.io/crypto-common/0.1.6 \
     crate://crates.io/derive_more/0.99.17 \
     crate://crates.io/digest/0.10.3 \
+    crate://crates.io/either/1.8.0 \
     crate://crates.io/encoding_rs/0.8.31 \
     crate://crates.io/exitcode/1.1.2 \
     crate://crates.io/firestorm/0.5.1 \
@@ -81,10 +87,12 @@ SRC_URI += " \
     crate://crates.io/log/0.4.17 \
     crate://crates.io/matches/0.1.9 \
     crate://crates.io/memchr/2.5.0 \
+    crate://crates.io/memoffset/0.6.5 \
     crate://crates.io/mime/0.3.16 \
     crate://crates.io/mime_guess/2.0.4 \
     crate://crates.io/miniz_oxide/0.5.4 \
     crate://crates.io/mio/0.8.4 \
+    crate://crates.io/ntapi/0.3.7 \
     crate://crates.io/num_cpus/1.13.1 \
     crate://crates.io/num_threads/0.1.6 \
     crate://crates.io/once_cell/1.14.0 \
@@ -100,6 +108,8 @@ SRC_URI += " \
     crate://crates.io/rand/0.8.5 \
     crate://crates.io/rand_chacha/0.3.1 \
     crate://crates.io/rand_core/0.6.3 \
+    crate://crates.io/rayon-core/1.9.3 \
+    crate://crates.io/rayon/1.5.3 \
     crate://crates.io/redox_syscall/0.2.16 \
     crate://crates.io/regex-syntax/0.6.27 \
     crate://crates.io/regex/1.6.0 \
@@ -117,7 +127,7 @@ SRC_URI += " \
     crate://crates.io/smallvec/1.9.0 \
     crate://crates.io/socket2/0.4.7 \
     crate://crates.io/syn/1.0.99 \
-    crate://crates.io/sysinfo/0.3.15 \
+    crate://crates.io/sysinfo/0.26.2 \
     crate://crates.io/time-macros/0.2.4 \
     crate://crates.io/time/0.3.14 \
     crate://crates.io/tinyvec/1.6.0 \
