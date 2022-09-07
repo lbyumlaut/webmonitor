@@ -9,6 +9,7 @@ struct ProcessorCore {
     name: String,
     utilization: f32,
     frequency: u64,
+    temperature: f32,
 }
 
 #[derive(Serialize, Debug, Default)]
@@ -48,12 +49,16 @@ async fn sysinfo(s: web::Data<Mutex<sysinfo::System>>) -> web::Json<SysInfo> {
     
     let mut sys = SysInfo::default();
     
+    
+    
     let processors = system.cpus();
     for processor in processors {
         sys.processor_cores.push(ProcessorCore{
             name: processor.name().to_string(),
             utilization: processor.cpu_usage(),
-            frequency: processor.frequency()});
+            frequency: std::fs::read_to_string(format!("/sys/devices/system/cpu/{}/cpufreq/scaling_cur_freq", processor.name().to_string())).unwrap_or_default().trim().parse().unwrap_or(0),
+            temperature: std::fs::read_to_string("/sys/class/thermal/thermal_zone0/temp").unwrap_or_default().trim().parse().unwrap_or(1.0)/1000.0,
+        });
     }
     
     sys.free_ram = system.free_memory();
