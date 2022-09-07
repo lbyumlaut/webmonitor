@@ -8,10 +8,10 @@ inherit cargo
 # how to get web_monitor could be as easy as but default to a git checkout:
 # SRC_URI += "crate://crates.io/web_monitor/0.1.0"
 SRC_URI += "git://bitbucket.org/lazarbankovic/webmonitor/;protocol=https;nobranch=1"
-SRCREV = "cab92bf6c72c78ff06339a1e352a714ff8037851"
+SRCREV = "a3a9924e0742281ea404d17b9356521a9ffa41cb"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
-PV:append = ".AUTOINC+cab92bf6c7"
+PV:append = ".AUTOINC+a3a9924e07"
 
 # please note if you have entries that do not begin with crate://
 # you must change them to how that package can be fetched
@@ -62,6 +62,7 @@ SRC_URI += " \
     crate://crates.io/flate2/1.0.24 \
     crate://crates.io/fnv/1.0.7 \
     crate://crates.io/form_urlencoded/1.0.1 \
+    crate://crates.io/fs2/0.4.3 \
     crate://crates.io/futures-core/0.3.24 \
     crate://crates.io/futures-sink/0.3.24 \
     crate://crates.io/futures-task/0.3.24 \
