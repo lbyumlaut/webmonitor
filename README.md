@@ -25,4 +25,4 @@ web_monitor /path/to/webpage/folder
 ```  
 After this page can be viewer on http://localhost:80/app  
 
-
+![](img/index.jpg)
