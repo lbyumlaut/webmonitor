@@ -1,0 +1,135 @@
+<HTML>
+    <HEAD>
+        <TITLE>NBNL</TITLE>
+        <STYLE>
+            BODY { padding-left: 25%; padding-top: 50px; font-family: "Tahoma"; }
+            TH, TD { width: 200px; text-align: left; }
+            TH { border-bottom: 1px solid #005c99; }
+            .data { width: 400px; }
+        </STYLE>
+        <SCRIPT>
+            function loadDoc() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                let data = JSON.parse(this.responseText);
+                console.log(data)
+                data["processor_cores"].forEach(function(data) {
+                    document.getElementById(data["name"]).innerHTML = data["utilization"].toFixed(2) + " %";
+		    document.getElementById(data["name"]+"_temperature").innerHTML = data["temperature"] + " C";
+		    document.getElementById(data["name"]+"_frequency").innerHTML = data["frequency"] + " kHz";
+                });
+                document.getElementById("free_ram").innerHTML = data["free_ram"];
+                document.getElementById("total_ram").innerHTML = data["total_ram"];
+                document.getElementById("used_ram").innerHTML = data["used_ram"];
+
+                document.getElementById("load_average_1m").innerHTML = data["load_average_1m"] + " %";
+                document.getElementById("load_average_5m").innerHTML = data["load_average_5m"] + " %";
+                document.getElementById("load_average_15m").innerHTML = data["load_average_15m"] + " %";
+
+                document.getElementById("kernel_version").innerHTML = data["kernel_version"];
+                document.getElementById("os_version").innerHTML = data["os_version"];
+                document.getElementById("system_name").innerHTML = data["system_name"].substring(0, 15);
+
+                let i = 0;
+                data["disks"].forEach(function(data) {
+                    document.getElementById("mount_point_" + i).innerHTML = data["mount_point"];
+                    document.getElementById("available_space_" + i).innerHTML = data["available_space"];
+                    document.getElementById("total_space_" + i).innerHTML = data["total_space"];
+                    i++;
+                });
+            }
+            xhttp.open("GET", "/sysinfo", true);
+            xhttp.send();
+            }
+        </SCRIPT>
+    </HEAD>
+    <BODY onload="loadDoc(); setInterval(loadDoc, 1000)">
+        <img src="app/images/netbeheer.png" alt="">
+        <h1>NextGen SmartMeter</h1>
+        <p>This is an example page running on the iMX6UL Development Board</p>
+        <div class="container">
+            <table>
+                <tr>
+                    <td>System name</td>
+                    <td class="data" id="system_name"></td>
+                </tr>
+                <tr>
+                    <td>Kernel ver.</td>
+                    <td class="data" id="kernel_version"></td>
+                </tr>
+                <tr>
+                    <td>Os ver.</td>
+                    <td class="data" id="os_version"></td>
+                </tr>
+            </table>
+	    <br>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th class="data">Utilization</th>
+                </tr>
+                <tr>
+                    <td>CPU-0</td>
+                    <td class="data" id="cpu0"></td>
+                </tr>
+                <tr>
+                    <td>Frequency</td>
+                    <td class="data" id="cpu0_frequency"></td>
+                </tr>
+                <tr>
+                    <td>Temperature</td>
+                    <td class="data" id="cpu0_temperature"></td>
+                </tr>
+
+            </table>
+            <br>
+	    <table>
+		<tr>
+		   <th>System Load</th>
+		   <th class="data">(1.0 - fully loaded)</th>
+		</tr>
+                <tr>
+                    <td>Average load 1m</td>
+                    <td class="data" id="load_average_1m"></td>
+                </tr>
+                <tr>
+                    <td>Average load 5m</td>
+                    <td class="data" id="load_average_5m"></td>
+                </tr>
+                <tr>
+                    <td>Average load 15m</td>
+                    <td class="data" id="load_average_15m"></td>
+                </tr>
+	    </table>
+	    <br>
+            <table>
+                <tr>
+                    <th>RAM</th>
+                    <th class="data">Bytes</th>
+                </tr>
+                <tr>
+                    <td>Free RAM</td>
+                    <td class="data" id="free_ram"></td>
+                </tr>
+                <tr>
+                    <td>Total RAM</td>
+                    <td class="data" id="total_ram"></td>
+                </tr>
+                <tr>
+                    <td>Used RAM</td>
+                    <td class="data" id="used_ram"></td>
+                </tr>
+            </table>
+            <br>
+	    <table>
+                <tr>
+                    <th>Flash</th>
+                    <th class="data">Bytes</th>
+                </tr>
+                <tr>
+                    <td>Mount Point</td>
+                    <td class="data" id="mount_point_0"></td>
+                </tr>
+                <tr>
+                    <td>Available Space</td>
+       
