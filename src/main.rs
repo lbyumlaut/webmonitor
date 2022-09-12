@@ -49,15 +49,21 @@ async fn sysinfo(s: web::Data<Mutex<sysinfo::System>>) -> web::Json<SysInfo> {
     
     let mut sys = SysInfo::default();
     
-    
-    
     let processors = system.cpus();
     for processor in processors {
         sys.processor_cores.push(ProcessorCore{
             name: processor.name().to_string(),
             utilization: processor.cpu_usage(),
-            frequency: std::fs::read_to_string(format!("/sys/devices/system/cpu/{}/cpufreq/scaling_cur_freq", processor.name().to_string())).unwrap_or_default().trim().parse().unwrap_or(0),
-            temperature: std::fs::read_to_string("/sys/class/thermal/thermal_zone0/temp").unwrap_or_default().trim().parse().unwrap_or(1.0)/1000.0,
+            frequency: std::fs::read_to_string(format!("/sys/devices/system/cpu/{}/cpufreq/scaling_cur_freq", processor.name().to_string()))
+                                .unwrap_or_default()
+                                .trim()
+                                .parse()
+                                .unwrap_or(0),
+            temperature: std::fs::read_to_string("/sys/class/thermal/thermal_zone0/temp")
+                                  .unwrap_or_default()
+                                  .trim()
+                                  .parse()
+                                  .unwrap_or(1.0)/1000.0,
         });
     }
     
@@ -76,16 +82,6 @@ async fn sysinfo(s: web::Data<Mutex<sysinfo::System>>) -> web::Json<SysInfo> {
     sys.os_version = system.long_os_version().unwrap_or_default();
     sys.kernel_version = system.kernel_version().unwrap_or_default();
 
-    // let disks = system.disks();
-    // for disk in disks {
-    //     sys.disks.push(Disk{ name: disk.name().to_str().unwrap_or_default().to_string(),
-    //         mount_point: disk.mount_point().to_str().unwrap_or_default().to_string(),
-    //         available_space: disk.available_space(),
-    //         total_space: disk.total_space(),
-    //         filesystem: String::from_utf8_lossy(disk.file_system()).to_string(),
-            
-    //     });
-    // }
     match fs2::statvfs("/")  {
         Ok(stat) => { 
             sys.disks.push(Filesystem { 
@@ -104,11 +100,11 @@ async fn main() -> std::io::Result<()> {
     let args: Vec<String> = env::args().collect();
     
     let name = std::env::current_exe()
-    .expect("Can't get the exec path")
-    .file_name()
-    .expect("Can't get the exec name")
-    .to_string_lossy()
-    .into_owned();
+                       .expect("Can't get the exec path")
+                       .file_name()
+                       .expect("Can't get the exec name")
+                       .to_string_lossy()
+                       .into_owned();
     
     if args.len() == 1 {
         println!("Usage: {} {{path to web folder}}", name);
@@ -117,8 +113,10 @@ async fn main() -> std::io::Result<()> {
     
     HttpServer::new(move || {
         let system = actix_web::web::Data::new(Mutex::new(sysinfo::System::new()));
-        App::new().service(fs::Files::new("/app", args[1].clone()).show_files_listing().index_file("index.html"))
-        .route("/sysinfo", web::get().to(sysinfo)).app_data(system)
+        App::new().service(fs::Files::new("/app", args[1].clone())
+                          .show_files_listing()
+                          .index_file("index.html"))
+                  .route("/sysinfo", web::get().to(sysinfo)).app_data(system)
     })
     .bind("0.0.0.0:80")?
     .run()
